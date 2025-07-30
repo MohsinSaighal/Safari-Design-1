@@ -1,0 +1,95 @@
+
+
+> I want you to **create a full-scale, production-ready frontend project** using **Vite + React + TypeScript**.
+> I've provided a **PDF file** (SafariQ Web3 Platform Website – Design Draft) with detailed content, copy, and structure for a Web3 travel platform called **SafariQ**.
+>
+> 🔽 Your task is to:
+>
+> 1. **Read and extract** website sections, text, and UI ideas from the PDF
+> 2. **Generate the actual code** for a full website using the PDF’s content
+> 3. Follow modern best practices in system design, performance, and scalability
+>
+> ---
+>
+> ### 🧠 Use the following stack and practices:
+>
+> * **Vite** as the build tool
+> * **React + TypeScript**
+> * **Tailwind CSS** for styling (dark theme + neon accents)
+> * **React Router** for routing
+> * **Zustand** for state management
+> * **Framer Motion** for animations
+> * **Vitest** + **React Testing Library** for tests
+> * **RainbowKit or Web3Modal** for wallet integration
+> * **Firebase** or **Auth0** for authentication
+> * **Polygon NFTs** with OpenSea/Crossmint APIs for minting
+> * **Plausible or PostHog** for analytics
+>
+> ---
+>
+> ### 📁 Folder Structure (you must scaffold this):
+>
+> ```
+> src/
+> ├── app/              # App.tsx, routing, global state config
+> ├── features/         # Feature-based folders: hero, vision, referral, dashboard, etc.
+> │   └── hero/         # HeroSection.tsx, hooks, assets, styles
+> │   └── referral/     # ReferralPage.tsx, dashboard, etc.
+> ├── shared/
+> │   ├── components/   # Reusable buttons, cards, modals
+> │   ├── hooks/        # useWindowSize, useAuth, useNFT etc.
+> │   ├── utils/        # API calls, helpers
+> │   ├── types/        # Global TypeScript types
+> │   └── constants/    # Routes, API endpoints, content config
+> ├── assets/           # Logos, icons, eSIM, SED token images
+> ├── styles/           # Tailwind config extensions, global.css
+> ├── main.tsx
+> └── vite.config.ts
+> ```
+>
+> ---
+>
+> ### 📄 Pages to Create (based on PDF content):
+>
+> 1. `Home` – includes Hero, Ecosystem, Vision, Roadmap, Community
+> 2. `Referral` – signup form, invite code, leaderboard preview
+> 3. `Dashboard` – gated page with referral stats, NFT vault, SED totals
+> 4. `NFT Mint` – call-to-action page with minting logic
+> 5. `Legal` – Terms & Conditions, Privacy Policy
+> 6. `404` – catch-all not found page
+>
+> ---
+>
+> ### 🖌 Use PDF content for:
+>
+> * Hero headline: **"Travel is Broken. We're Fixing It — With Web3 + Patent-Ready AI."**
+> * Feature sections: Travel ecosystem cards, token/NFT utility
+> * Signup portal copy, referral ranks
+> * Dashboard content blocks
+> * SED/NFT funnel infographic (mock as SVG or placeholder)
+> * Roadmap timeline
+> * Community links and social integrations
+>
+> ---
+>
+> ### 🧠 Special Requirements:
+>
+> * Mobile-first layout with responsive visuals
+> * Animations for parallax scrolls, hovers, and card loads
+> * Use real placeholder data if APIs not available (e.g., dummy NFTs)
+> * Add reusable buttons like `Join the Journey`, `Connect Wallet`, `Mint NFT`
+> * Footer with wallet connect and social icons (X, Telegram, Lens)
+>
+> ---
+>
+> 📦 Output must include:
+>
+> * The **entire codebase**
+> * Populated routes and pages
+> * Ready-to-run `package.json` + `README.md`
+> * PDF-derived copy text integrated into each section
+> * Live demo instructions (`npm install && npm run dev`)
+>
+> You must **generate the actual project files**, not just recommend. Make it clean, efficient, scalable, and truly production-grade.
+
+

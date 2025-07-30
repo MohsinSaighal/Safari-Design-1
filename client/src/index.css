@@ -1,0 +1,279 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+  
+  /* SafariQ Custom Colors */
+  --neon-cyan: hsl(182, 100%, 50%);
+  --neon-violet: hsl(271, 76%, 53%);
+  --neon-green: hsl(150, 100%, 50%);
+  --neon-cyan-rgb: 0, 245, 255;
+  --neon-violet-rgb: 138, 43, 226;
+  --neon-green-rgb: 0, 255, 127;
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground overflow-x-hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Enhanced glow and neon animations */
+  .animate-glow-cyan {
+    animation: glow-cyan 2s ease-in-out infinite alternate;
+  }
+  
+  .animate-glow-violet {
+    animation: glow-violet 2s ease-in-out infinite alternate;
+  }
+  
+  .animate-glow-green {
+    animation: glow-green 2s ease-in-out infinite alternate;
+  }
+  
+  /* Enhanced gradient border animation */
+  .animate-gradient-border {
+    background: linear-gradient(45deg, 
+      hsl(182, 100%, 50%), 
+      hsl(271, 76%, 53%), 
+      hsl(150, 100%, 50%), 
+      hsl(182, 100%, 50%)
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 3s ease infinite;
+  }
+}
+
+/* Enhanced keyframes */
+@keyframes glow-cyan {
+  from {
+    text-shadow: 0 0 10px hsl(182, 100%, 50%), 0 0 20px hsl(182, 100%, 50%), 0 0 30px hsl(182, 100%, 50%);
+  }
+  to {
+    text-shadow: 0 0 20px hsl(182, 100%, 50%), 0 0 30px hsl(182, 100%, 50%), 0 0 40px hsl(182, 100%, 50%);
+  }
+}
+
+@keyframes glow-violet {
+  from {
+    text-shadow: 0 0 10px hsl(271, 76%, 53%), 0 0 20px hsl(271, 76%, 53%), 0 0 30px hsl(271, 76%, 53%);
+  }
+  to {
+    text-shadow: 0 0 20px hsl(271, 76%, 53%), 0 0 30px hsl(271, 76%, 53%), 0 0 40px hsl(271, 76%, 53%);
+  }
+}
+
+@keyframes glow-green {
+  from {
+    text-shadow: 0 0 10px hsl(150, 100%, 50%), 0 0 20px hsl(150, 100%, 50%), 0 0 30px hsl(150, 100%, 50%);
+  }
+  to {
+    text-shadow: 0 0 20px hsl(150, 100%, 50%), 0 0 30px hsl(150, 100%, 50%), 0 0 40px hsl(150, 100%, 50%);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@layer utilities {
+  .font-space {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  .font-inter {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .text-neon-cyan {
+    color: var(--neon-cyan);
+  }
+  
+  .text-neon-violet {
+    color: var(--neon-violet);
+  }
+  
+  .text-neon-green {
+    color: var(--neon-green);
+  }
+  
+  .bg-neon-cyan {
+    background-color: var(--neon-cyan);
+  }
+  
+  .bg-neon-violet {
+    background-color: var(--neon-violet);
+  }
+  
+  .bg-neon-green {
+    background-color: var(--neon-green);
+  }
+  
+  .border-neon-cyan {
+    border-color: var(--neon-cyan);
+  }
+  
+  .border-neon-violet {
+    border-color: var(--neon-violet);
+  }
+  
+  .border-neon-green {
+    border-color: var(--neon-green);
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 15px var(--neon-cyan);
+  }
+  
+  .neon-glow-violet {
+    box-shadow: 0 0 5px var(--neon-violet), 0 0 10px var(--neon-violet), 0 0 15px var(--neon-violet);
+  }
+  
+  .neon-glow-green {
+    box-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green), 0 0 15px var(--neon-green);
+  }
+
+  .brutalist-shadow {
+    box-shadow: 8px 8px 0px var(--neon-cyan);
+  }
+  
+  .brutalist-shadow-violet {
+    box-shadow: 8px 8px 0px var(--neon-violet);
+  }
+  
+  .brutalist-shadow-green {
+    box-shadow: 8px 8px 0px var(--neon-green);
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(240, 10%, 3.9%) 0%, hsl(240, 3.7%, 15.9%) 50%, hsl(240, 10%, 3.9%) 100%);
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-neon {
+    animation: pulse-neon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.8s ease-out;
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 15px var(--neon-cyan);
+  }
+  to {
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-cyan);
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse-neon {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(240, 10%, 3.9%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--neon-cyan-rgb), 0.8);
+}
