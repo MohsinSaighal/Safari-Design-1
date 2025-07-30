@@ -43,13 +43,15 @@ export default function Navigation() {
   };
 
   const handleConnectWallet = async () => {
-    if (isConnecting) return;
+    if (isConnecting || walletAddress) return;
     
-    if (!walletAddress) {
+    try {
       const result = await connectWallet();
       if (!result.success) {
         console.error('Failed to connect wallet:', result.error);
       }
+    } catch (error) {
+      console.error('Wallet connection error:', error);
     }
   };
 
@@ -119,10 +121,10 @@ export default function Navigation() {
               onClick={handleConnectWallet}
               disabled={isConnecting}
               variant="cyber-cyan"
-              className="hidden sm:flex items-center space-x-2"
+              className="hidden sm:flex items-center space-x-2 px-4 py-2 min-h-[44px] touch-manipulation"
             >
               <Wallet size={16} />
-              <span>
+              <span className="whitespace-nowrap">
                 {isConnecting 
                   ? 'Connecting...' 
                   : walletAddress 
@@ -173,18 +175,24 @@ export default function Navigation() {
                 </Link>
               )}
 
-              <Button
-                onClick={handleConnectWallet}
-                disabled={isConnecting}
-                className="w-full mt-4 border border-neon-cyan text-neon-cyan bg-transparent hover:bg-neon-cyan/10 transition-all duration-300"
-              >
-                {isConnecting 
-                  ? 'Connecting...' 
-                  : walletAddress 
-                    ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
-                    : 'Connect Wallet'
-                }
-              </Button>
+              <div className="pt-2 border-t border-gray-700">
+                <EnhancedButton
+                  onClick={handleConnectWallet}
+                  disabled={isConnecting}
+                  variant="cyber-cyan"
+                  className="w-full flex items-center justify-center space-x-2 py-3 min-h-[48px] touch-manipulation"
+                >
+                  <Wallet size={16} />
+                  <span className="whitespace-nowrap">
+                    {isConnecting 
+                      ? 'Connecting...' 
+                      : walletAddress 
+                        ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
+                        : 'Connect Wallet'
+                    }
+                  </span>
+                </EnhancedButton>
+              </div>
             </div>
           </motion.div>
         )}

@@ -12,12 +12,15 @@ export function useWeb3() {
 
   // Mock wallet connection - replace with actual Web3 integration
   const connectWallet = useCallback(async () => {
-    if (isConnecting) return { success: false, error: 'Already connecting' };
+    if (isConnecting) {
+      return { success: false, error: 'Already connecting' };
+    }
     
     setIsConnecting(true);
+    
     try {
-      // Simulate wallet connection with shorter delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Simulate wallet connection
+      await new Promise(resolve => setTimeout(resolve, 800));
       const mockAddress = '0x' + Math.random().toString(16).substring(2, 42).padStart(40, '0');
       setWalletAddress(mockAddress);
       return { success: true, address: mockAddress };
