@@ -25,11 +25,11 @@ const StackedCards = memo(function StackedCards({ cards, className = '' }: Stack
     offset: ["start 0.7", "end 0.3"]
   });
 
-  // Use spring for smoother animations
+  // Use spring for much faster, smoother animations
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
+    stiffness: 400,
+    damping: 25,
+    restDelta: 0.0001
   });
 
   // Memoize color classes for better performance
@@ -91,39 +91,42 @@ const StackedCards = memo(function StackedCards({ cards, className = '' }: Stack
       <div 
         ref={containerRef} 
         className="relative"
-        style={{ height: `${cardHeight * cards.length + 150}px` }}
+        style={{ 
+          height: `${cardHeight * cards.length * 0.6 + 100}px`,
+          position: 'relative'
+        }}
       >
         {cards.map((card, index) => {
-          const targetY = index * 20;
+          const targetY = index * 10; // Smaller stacking offset like HTML example
           const colors = getColorClasses(card.color);
           
-          // Progressive stacking as user scrolls
-          const startScroll = Math.max(0, (index / cards.length) * 0.8);
-          const endScroll = Math.min(1, startScroll + 0.3);
+          // Much faster progressive stacking - similar to HTML example
+          const startScroll = Math.max(0, (index / cards.length) * 0.6);
+          const endScroll = Math.min(1, startScroll + 0.2);
           
-          // Use smooth spring animations for better performance
+          // Direct transform values like the HTML example
           const y = useTransform(
             smoothProgress,
             [startScroll, endScroll],
-            [index * cardHeight * 0.6, targetY]
+            [index * cardHeight * 0.4, index * 10] // Much smaller final offset like HTML (10px, 20px, etc)
           );
           
           const scale = useTransform(
             smoothProgress,
             [startScroll, endScroll],
-            [1, 0.97 - index * 0.015]
+            [1, 1 + index * 0.01] // Slight scale increase like HTML (1.01, 1.02, etc)
           );
           
           const opacity = useTransform(
             smoothProgress,
             [startScroll, endScroll],
-            [1, Math.max(0.6, 1 - index * 0.08)]
+            [1, 1] // Keep full opacity like HTML
           );
 
           const rotate = useTransform(
             smoothProgress,
             [startScroll, endScroll],
-            [0, index * 1.2 - 1.2]
+            [0, 0] // No rotation for cleaner look like HTML
           );
 
           return (
@@ -136,13 +139,15 @@ const StackedCards = memo(function StackedCards({ cards, className = '' }: Stack
                 opacity,
                 rotate,
                 zIndex: cards.length - index,
-                transformOrigin: "center center"
+                transformOrigin: "center center",
+                backfaceVisibility: "hidden",
+                perspective: 1000
               }}
-              initial={{ y: index * cardHeight * 0.6 + 30, opacity: 0 }}
-              animate={{ y: index * cardHeight * 0.6, opacity: 1 }}
+              initial={{ y: index * cardHeight * 0.4 + 20, opacity: 0 }}
+              animate={{ y: index * cardHeight * 0.4, opacity: 1 }}
               transition={{ 
-                duration: 0.3, 
-                delay: index * 0.05,
+                duration: 0.15, 
+                delay: index * 0.02,
                 type: "tween",
                 ease: "easeOut"
               }}
