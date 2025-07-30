@@ -5,6 +5,7 @@ import { Compass, Menu, X, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { useAuth } from '@/hooks/use-auth';
+import { Badge } from '@/components/ui/badge';
 import { useWeb3 } from '@/hooks/use-web3';
 import { ROUTES } from '@/lib/constants';
 
@@ -12,7 +13,7 @@ export default function Navigation() {
   const [location] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { walletAddress, connectWallet, isConnecting } = useWeb3();
 
   useEffect(() => {
@@ -85,16 +86,25 @@ export default function Navigation() {
               </motion.button>
             ))}
             
-            {isAuthenticated && (
-              <Link href={ROUTES.DASHBOARD}>
-                <motion.span 
-                  className="hover:text-neon-cyan transition-colors font-medium cursor-pointer"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Dashboard
-                </motion.span>
-              </Link>
+            {isAuthenticated && user && (
+              <div className="flex items-center space-x-4">
+                <Link href={ROUTES.DASHBOARD}>
+                  <motion.span 
+                    className="hover:text-neon-cyan transition-colors font-medium cursor-pointer"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Dashboard
+                  </motion.span>
+                </Link>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-400">Welcome,</span>
+                  <span className="text-neon-cyan font-medium">{user.name}</span>
+                  <Badge className="bg-neon-violet/20 text-neon-violet border-neon-violet/30">
+                    {user.rank}
+                  </Badge>
+                </div>
+              </div>
             )}
           </div>
 

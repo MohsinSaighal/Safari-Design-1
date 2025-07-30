@@ -4,10 +4,49 @@ import { storage } from "./storage";
 import { insertUserSchema, insertNFTSchema, insertNewsletterSchema } from "@shared/schema";
 import { z } from "zod";
 
+// Input validation middleware
+const validateInput = (schema: z.ZodSchema) => {
+  return (req: Request, res: Response, next: any) => {
+    try {
+      schema.parse(req.body);
+      next();
+    } catch (error) {
+      return res.status(400).json({ 
+        message: "Invalid input data", 
+        error: error instanceof z.ZodError ? error.issues : error 
+      });
+    }
+  };
+};
+
+// Rate limiting (simple in-memory implementation)
+const requestCounts = new Map<string, { count: number, resetTime: number }>();
+const RATE_LIMIT = 100; // requests per minute
+const RATE_WINDOW = 60 * 1000; // 1 minute
+
+const rateLimit = (req: Request, res: Response, next: any) => {
+  const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
+  const now = Date.now();
+  const userRequests = requestCounts.get(clientIp);
+  
+  if (!userRequests || now > userRequests.resetTime) {
+    requestCounts.set(clientIp, { count: 1, resetTime: now + RATE_WINDOW });
+    next();
+  } else if (userRequests.count < RATE_LIMIT) {
+    userRequests.count++;
+    next();
+  } else {
+    res.status(429).json({ message: "Too many requests, please try again later" });
+  }
+};
+
 export async function registerRoutes(app: Express): Promise<Server> {
   
+  // Apply rate limiting to all API routes
+  app.use('/api/', rateLimit);
+  
   // User registration
-  app.post("/api/users/register", async (req: Request, res: Response) => {
+  app.post("/api/users/register", validateInput(insertUserSchema), async (req: Request, res: Response) => {
     try {
       const userData = insertUserSchema.parse(req.body);
       
@@ -49,7 +88,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Mint NFT
-  app.post("/api/nfts/mint", async (req: Request, res: Response) => {
+  app.post("/api/nfts/mint", validateInput(insertNFTSchema), async (req: Request, res: Response) => {
     try {
       const nftData = insertNFTSchema.parse(req.body);
       const nft = await storage.createNFT(nftData);

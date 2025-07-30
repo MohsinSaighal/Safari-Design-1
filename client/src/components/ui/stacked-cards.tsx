@@ -22,12 +22,12 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 0.7", "end 0.3"]
+    offset: ["start 0.9", "end 0.1"]
   });
 
   useEffect(() => {
     if (containerRef.current) {
-      setCardHeight(containerRef.current.clientHeight / cards.length);
+      setCardHeight(350); // Fixed height for better spacing
     }
   }, [cards.length]);
 
@@ -89,34 +89,37 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
       <div 
         ref={containerRef} 
         className="relative"
-        style={{ height: `${cardHeight * cards.length + 200}px` }}
+        style={{ height: `${cardHeight * cards.length + 600}px` }}
       >
         {cards.map((card, index) => {
-          const targetY = index * 30; // Stack offset when stacked
+          const targetY = index * 25; // Tighter stack offset when stacked
           const colors = getColorClasses(card.color);
+          
+          // Initial vertical separation - cards start far apart
+          const initialSeparation = index * 180;
           
           const y = useTransform(
             scrollYProgress,
-            [0, 0.2, 0.8, 1],
-            [0, 0, targetY, targetY]
+            [0, 0.3, 0.7, 1],
+            [initialSeparation, initialSeparation * 0.3, targetY, targetY]
           );
           
           const scale = useTransform(
             scrollYProgress,
-            [0, 0.2, 0.8, 1],
-            [1, 1, 0.95 - index * 0.02, 0.95 - index * 0.02]
+            [0, 0.3, 0.7, 1],
+            [1, 0.98, 0.94 - index * 0.03, 0.94 - index * 0.03]
           );
           
           const opacity = useTransform(
             scrollYProgress,
-            [0, 0.2, 0.8, 1],
-            [1, 1, Math.max(0.3, 1 - index * 0.1), Math.max(0.3, 1 - index * 0.1)]
+            [0, 0.3, 0.7, 1],
+            [1, 1, Math.max(0.4, 1 - index * 0.15), Math.max(0.4, 1 - index * 0.15)]
           );
 
           const rotate = useTransform(
             scrollYProgress,
-            [0, 0.2, 0.8, 1],
-            [0, 0, index * 2 - 2, index * 2 - 2]
+            [0, 0.3, 0.7, 1],
+            [0, 0, index * 1.5 - 1.5, index * 1.5 - 1.5]
           );
 
           return (
@@ -130,13 +133,14 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
                 rotate,
                 zIndex: cards.length - index,
               }}
-              initial={{ y: index * 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              initial={{ y: initialSeparation + 50, opacity: 0 }}
+              animate={{ y: initialSeparation, opacity: 1 }}
               transition={{ 
-                duration: 0.6, 
-                delay: index * 0.1,
+                duration: 0.8, 
+                delay: index * 0.15,
                 type: "spring",
-                damping: 20
+                damping: 25,
+                stiffness: 100
               }}
             >
               <Card 
