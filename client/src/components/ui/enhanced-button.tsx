@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button, ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-interface EnhancedButtonProps extends ButtonProps {
+interface EnhancedButtonProps extends Omit<ButtonProps, 'variant'> {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'cyber-cyan' | 'cyber-violet' | 'cyber-green';
   glowEffect?: boolean;
   pulseEffect?: boolean;
@@ -27,25 +27,34 @@ const EnhancedButton = forwardRef<HTMLButtonElement, EnhancedButtonProps>(
           return cn(
             'bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan',
             'hover:bg-neon-cyan hover:text-gray-900 hover:shadow-[0_0_30px_rgba(0,245,255,0.5)]',
+            'active:bg-neon-cyan/80 active:scale-95',
             'transition-all duration-300 transform hover:scale-105',
             'font-space font-semibold tracking-wide',
-            'backdrop-blur-sm'
+            'backdrop-blur-sm touch-manipulation',
+            'focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:ring-offset-2',
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
           );
         case 'cyber-violet':
           return cn(
             'bg-neon-violet/20 border-2 border-neon-violet text-neon-violet',
             'hover:bg-neon-violet hover:text-white hover:shadow-[0_0_30px_rgba(138,43,226,0.5)]',
+            'active:bg-neon-violet/80 active:scale-95',
             'transition-all duration-300 transform hover:scale-105',
             'font-space font-semibold tracking-wide',
-            'backdrop-blur-sm'
+            'backdrop-blur-sm touch-manipulation',
+            'focus:outline-none focus:ring-2 focus:ring-neon-violet focus:ring-offset-2',
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
           );
         case 'cyber-green':
           return cn(
             'bg-neon-green/20 border-2 border-neon-green text-neon-green',
             'hover:bg-neon-green hover:text-gray-900 hover:shadow-[0_0_30px_rgba(0,255,127,0.5)]',
+            'active:bg-neon-green/80 active:scale-95',
             'transition-all duration-300 transform hover:scale-105',
             'font-space font-semibold tracking-wide',
-            'backdrop-blur-sm'
+            'backdrop-blur-sm touch-manipulation',
+            'focus:outline-none focus:ring-2 focus:ring-neon-green focus:ring-offset-2',
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
           );
         default:
           return '';
@@ -69,7 +78,7 @@ const EnhancedButton = forwardRef<HTMLButtonElement, EnhancedButtonProps>(
       >
         <Button
           ref={ref}
-          variant={variant.startsWith('cyber') ? 'outline' : variant}
+          variant={variant.startsWith('cyber') ? 'outline' : variant as any}
           className={baseClasses}
           {...props}
         >
