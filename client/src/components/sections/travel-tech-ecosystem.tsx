@@ -55,7 +55,7 @@ export default function TravelTechEcosystem() {
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
-          className="mb-20"
+          className="mb-8"
         >
           <motion.div
             variants={fadeInUp}
