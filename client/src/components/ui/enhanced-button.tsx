@@ -89,7 +89,7 @@ const EnhancedButton = forwardRef<HTMLButtonElement, EnhancedButtonProps>(
             </div>
           )}
           
-          <span className="relative z-10">{children}</span>
+          <div className="relative z-10 flex items-center space-x-2">{children}</div>
         </Button>
       </motion.div>
     );

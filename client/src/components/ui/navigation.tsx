@@ -121,9 +121,9 @@ export default function Navigation() {
               onClick={handleConnectWallet}
               disabled={isConnecting}
               variant="cyber-cyan"
-              className="hidden sm:flex items-center space-x-2 px-4 py-2 min-h-[44px] touch-manipulation"
+              className="hidden sm:inline-flex px-4 py-2 min-h-[44px] touch-manipulation"
             >
-              <Wallet size={16} />
+              <Wallet size={16} className="flex-shrink-0" />
               <span className="whitespace-nowrap">
                 {isConnecting 
                   ? 'Connecting...' 
@@ -180,9 +180,9 @@ export default function Navigation() {
                   onClick={handleConnectWallet}
                   disabled={isConnecting}
                   variant="cyber-cyan"
-                  className="w-full flex items-center justify-center space-x-2 py-3 min-h-[48px] touch-manipulation"
+                  className="w-full inline-flex justify-center py-3 min-h-[48px] touch-manipulation"
                 >
-                  <Wallet size={16} />
+                  <Wallet size={16} className="flex-shrink-0" />
                   <span className="whitespace-nowrap">
                     {isConnecting 
                       ? 'Connecting...' 
