@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useRef, memo, useMemo } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface StackedCard {
@@ -16,7 +16,7 @@ interface StackedCardsProps {
   className?: string;
 }
 
-export default function StackedCards({ cards, className = '' }: StackedCardsProps) {
+const StackedCards = memo(function StackedCards({ cards, className = '' }: StackedCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cardHeight] = useState(280);
   
@@ -25,7 +25,15 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
     offset: ["start 0.7", "end 0.3"]
   });
 
-  const getColorClasses = (color: string) => {
+  // Use spring for smoother animations
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // Memoize color classes for better performance
+  const getColorClasses = useMemo(() => (color: string) => {
     switch (color) {
       case 'cyan':
         return {
@@ -76,7 +84,7 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
           icon: 'bg-neon-cyan/20 text-neon-cyan'
         };
     }
-  };
+  }, []);
 
   return (
     <div className={`relative ${className}`} style={{ position: 'relative' }}>
@@ -93,28 +101,29 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
           const startScroll = Math.max(0, (index / cards.length) * 0.8);
           const endScroll = Math.min(1, startScroll + 0.3);
           
+          // Use smooth spring animations for better performance
           const y = useTransform(
-            scrollYProgress,
+            smoothProgress,
             [startScroll, endScroll],
-            [index * cardHeight * 0.7, targetY]
+            [index * cardHeight * 0.6, targetY]
           );
           
           const scale = useTransform(
-            scrollYProgress,
+            smoothProgress,
             [startScroll, endScroll],
-            [1, 0.96 - index * 0.02]
+            [1, 0.97 - index * 0.015]
           );
           
           const opacity = useTransform(
-            scrollYProgress,
+            smoothProgress,
             [startScroll, endScroll],
-            [1, Math.max(0.5, 1 - index * 0.1)]
+            [1, Math.max(0.6, 1 - index * 0.08)]
           );
 
           const rotate = useTransform(
-            scrollYProgress,
+            smoothProgress,
             [startScroll, endScroll],
-            [0, index * 1.5 - 1.5]
+            [0, index * 1.2 - 1.2]
           );
 
           return (
@@ -129,11 +138,11 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
                 zIndex: cards.length - index,
                 transformOrigin: "center center"
               }}
-              initial={{ y: index * cardHeight * 0.7 + 50, opacity: 0 }}
-              animate={{ y: index * cardHeight * 0.7, opacity: 1 }}
+              initial={{ y: index * cardHeight * 0.6 + 30, opacity: 0 }}
+              animate={{ y: index * cardHeight * 0.6, opacity: 1 }}
               transition={{ 
-                duration: 0.5, 
-                delay: index * 0.08,
+                duration: 0.3, 
+                delay: index * 0.05,
                 type: "tween",
                 ease: "easeOut"
               }}
@@ -182,4 +191,6 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
       </div>
     </div>
   );
-}
+});
+
+export default StackedCards;
