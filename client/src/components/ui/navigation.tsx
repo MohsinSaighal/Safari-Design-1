@@ -43,8 +43,13 @@ export default function Navigation() {
   };
 
   const handleConnectWallet = async () => {
+    if (isConnecting) return;
+    
     if (!walletAddress) {
-      await connectWallet();
+      const result = await connectWallet();
+      if (!result.success) {
+        console.error('Failed to connect wallet:', result.error);
+      }
     }
   };
 

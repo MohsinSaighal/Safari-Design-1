@@ -18,18 +18,12 @@ interface StackedCardsProps {
 
 export default function StackedCards({ cards, className = '' }: StackedCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [cardHeight, setCardHeight] = useState(300);
+  const [cardHeight] = useState(280);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 0.8", "end 0.2"]
+    offset: ["start 0.7", "end 0.3"]
   });
-
-  useEffect(() => {
-    if (containerRef.current) {
-      setCardHeight(280); // Optimized height for better spacing
-    }
-  }, [cards.length]);
 
   const getColorClasses = (color: string) => {
     switch (color) {
@@ -85,72 +79,72 @@ export default function StackedCards({ cards, className = '' }: StackedCardsProp
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className}`} style={{ position: 'relative' }}>
       <div 
         ref={containerRef} 
         className="relative"
-        style={{ height: `${cardHeight * cards.length + 200}px` }}
+        style={{ height: `${cardHeight * cards.length + 150}px` }}
       >
         {cards.map((card, index) => {
-          const targetY = index * 20; // Tighter stack when stacked
+          const targetY = index * 20;
           const colors = getColorClasses(card.color);
           
-          // Each card has its own scroll trigger point
-          const cardScrollStart = index / cards.length;
-          const cardScrollEnd = (index + 1) / cards.length;
+          // Progressive stacking as user scrolls
+          const startScroll = Math.max(0, (index / cards.length) * 0.8);
+          const endScroll = Math.min(1, startScroll + 0.3);
           
-          // Cards start in their natural position, then stack as user scrolls past them
           const y = useTransform(
             scrollYProgress,
-            [0, cardScrollStart, cardScrollEnd, 1],
-            [index * cardHeight * 0.7, index * cardHeight * 0.7, targetY, targetY]
+            [startScroll, endScroll],
+            [index * cardHeight * 0.7, targetY]
           );
           
           const scale = useTransform(
             scrollYProgress,
-            [0, cardScrollStart, cardScrollEnd, 1],
-            [1, 1, 0.96 - index * 0.02, 0.96 - index * 0.02]
+            [startScroll, endScroll],
+            [1, 0.96 - index * 0.02]
           );
           
           const opacity = useTransform(
             scrollYProgress,
-            [0, cardScrollStart, cardScrollEnd, 1],
-            [1, 1, Math.max(0.5, 1 - index * 0.1), Math.max(0.5, 1 - index * 0.1)]
+            [startScroll, endScroll],
+            [1, Math.max(0.5, 1 - index * 0.1)]
           );
 
           const rotate = useTransform(
             scrollYProgress,
-            [0, cardScrollStart, cardScrollEnd, 1],
-            [0, 0, index * 1 - 1, index * 1 - 1]
+            [startScroll, endScroll],
+            [0, index * 1.5 - 1.5]
           );
 
           return (
             <motion.div
               key={card.id}
-              className="absolute w-full"
+              className="absolute w-full will-change-transform"
               style={{
                 y,
                 scale,
                 opacity,
                 rotate,
                 zIndex: cards.length - index,
+                transformOrigin: "center center"
               }}
               initial={{ y: index * cardHeight * 0.7 + 50, opacity: 0 }}
               animate={{ y: index * cardHeight * 0.7, opacity: 1 }}
               transition={{ 
-                duration: 0.6, 
-                delay: index * 0.1,
-                type: "spring",
-                damping: 20,
-                stiffness: 120
+                duration: 0.5, 
+                delay: index * 0.08,
+                type: "tween",
+                ease: "easeOut"
               }}
             >
               <Card 
                 className={`
                   ${colors.bg} ${colors.border} ${colors.shadow}
                   border-2 backdrop-blur-sm
-                  transform-gpu transition-all duration-300
-                  hover:scale-105 hover:${colors.shadow.replace('0.3', '0.5')}
+                  transform-gpu will-change-transform
+                  transition-transform duration-200 ease-out
+                  hover:scale-[1.02] hover:${colors.shadow.replace('0.3', '0.4')}
                 `}
               >
                 <CardContent className="p-8">
